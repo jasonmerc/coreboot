@@ -10,7 +10,7 @@ type bd82x6x struct {
 	node    *DevTreeNode
 }
 
-func (b bd82x6x) writeGPIOSet(ctx Context, sb *os.File,
+func writeGPIOSet(ctx Context, sb *os.File,
 	val uint32, set uint, partno int, constraint uint32) {
 
 	max := uint(32)
@@ -36,7 +36,7 @@ func (b bd82x6x) writeGPIOSet(ctx Context, sb *os.File,
 	}
 }
 
-func (b bd82x6x) GPIO(ctx Context, inteltool InteltoolData) {
+func GPIO(ctx Context, inteltool InteltoolData) {
 	var constraint uint32
 	gpio := Create(ctx, "gpio.c")
 	defer gpio.Close()
@@ -85,7 +85,7 @@ func (b bd82x6x) GPIO(ctx Context, inteltool InteltoolData) {
 				constraint &^= inteltool.GPIO[uint16(addresses[set-1][1])]
 				constraint &= inteltool.GPIO[uint16(addresses[set-1][5])]
 			}
-			b.writeGPIOSet(ctx, gpio, inteltool.GPIO[uint16(addr)], uint(set), partno, constraint)
+			writeGPIOSet(ctx, gpio, inteltool.GPIO[uint16(addr)], uint(set), partno, constraint)
 			gpio.WriteString("};\n\n")
 		}
 	}
@@ -115,7 +115,7 @@ func (b bd82x6x) GPIO(ctx Context, inteltool InteltoolData) {
 `)
 }
 
-func (b bd82x6x) IsPCIeHotplug(ctx Context, port int) bool {
+func IsPCIeHotplug(ctx Context, port int) bool {
 	portDev, ok := PCIMap[PCIAddr{Bus: 0, Dev: 0x1c, Func: port}]
 	if !ok {
 		return false
@@ -168,7 +168,7 @@ func (b bd82x6x) Scan(ctx Context, addr PCIDevData) {
 	SouthBridge = &b
 
 	inteltool := ctx.InfoSource.GetInteltool()
-	b.GPIO(ctx, inteltool)
+	GPIO(ctx, inteltool)
 
 	KconfigBool["SOUTHBRIDGE_INTEL_"+b.variant] = true
 	KconfigBool["SERIRQ_CONTINUOUS_MODE"] = true
@@ -202,14 +202,14 @@ func (b bd82x6x) Scan(ctx Context, addr PCIDevData) {
 	pcieHotplugMap := "{ "
 
 	for port := 0; port < 7; port++ {
-		if b.IsPCIeHotplug(ctx, port) {
+		if IsPCIeHotplug(ctx, port) {
 			pcieHotplugMap += "1, "
 		} else {
 			pcieHotplugMap += "0, "
 		}
 	}
 
-	if b.IsPCIeHotplug(ctx, 7) {
+	if IsPCIeHotplug(ctx, 7) {
 		pcieHotplugMap += "1 }"
 	} else {
 		pcieHotplugMap += "0 }"

@@ -32,6 +32,7 @@ type PCIDevice interface {
 type InteltoolData struct {
 	GPIO map[uint16]uint32
 	RCBA map[uint16]uint32
+	IOBP map[uint32]uint32
 	IGD  map[uint32]uint32
 }
 
@@ -222,6 +223,12 @@ func RestorePCI16Simple(f *os.File, pcidev PCIDevData, addr uint16) {
 		pcidev.Bus, pcidev.Dev, pcidev.Func, addr,
 		pcidev.ConfigDump[addr+1],
 		pcidev.ConfigDump[addr])
+}
+
+func RestoreDIRRoute(f *os.File, regname string, val uint16) {
+	fmt.Fprintf(f, "	RCBA16(%s) = DIR_ROUTE(PIRQ%c, PIRQ%c, PIRQ%c, PIRQ%c);\n",
+		regname, 'A'+(val&7), 'A'+((val>>4)&7),
+		'A'+((val>>8)&7), 'A'+((val>>12)&7))
 }
 
 func RestorePCI32Simple(f *os.File, pcidev PCIDevData, addr uint16) {
