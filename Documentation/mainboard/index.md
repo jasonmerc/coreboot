@@ -28,6 +28,7 @@ This section contains documentation about coreboot on specific mainboards.
 
 ## Dell
 
+- [Latitude E7240](dell/latitude_e7240.md)
 - [OptiPlex 9010 SFF](dell/optiplex_9010.md)
 
 ## Emulation
