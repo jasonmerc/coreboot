@@ -1,0 +1,2 @@
+config BOARD_DELL_LATITUDE_E7440
+	bool "Latitude E7440"
