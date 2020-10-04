@@ -217,7 +217,6 @@ static void setup_aspm(const stepping_t stepping, const int peg_enabled)
 		pci_update_config32(pciex, 0xb04, ~(0x03 << 29), 0x01 << 29);
 	}
 
-
 	/*\ Setup ASPM on DMI \*/
 
 	/* Exit latencies should be checked to be supported by
@@ -231,7 +230,6 @@ static void setup_aspm(const stepping_t stepping, const int peg_enabled)
 	DMIBAR32(0x84) = (DMIBAR32(0x84) & ~(63 << 12)) | (2 << 12) | (2 << 15);
 	DMIBAR8(0x208 + 3) = 0;
 	DMIBAR32(0x208) &= ~(3 << 20);
-
 
 	/*\ Setup ASPM on PEG \*/
 	/*
@@ -252,12 +250,11 @@ static void setup_rcrb(const int peg_enabled)
 
 	/* Link1: component ID 1, link valid. */
 	EPBAR32(EPLE1D) = (EPBAR32(EPLE1D) & 0xff000000) | (1 << 16) | (1 << 0);
-	EPBAR32(EPLE1A) = (uintptr_t)DEFAULT_DMIBAR;
+	EPBAR32(EPLE1A) = DEFAULT_DMIBAR;
 
 	if (peg_enabled)
 		/* Link2: link_valid. */
 		EPBAR8(EPLE2D) |= (1 << 0); /* link valid */
-
 
 	/*\ RCRB setup: DMI Port \*/
 
@@ -271,7 +268,7 @@ static void setup_rcrb(const int peg_enabled)
 	/* Link2: component ID 1 (MCH), link valid */
 	DMIBAR32(DMILE2D) =
 		(DMIBAR32(DMILE2D) & 0xff000000) | (1 << 16) | (1 << 0);
-	DMIBAR32(DMILE2A) = (uintptr_t)DEFAULT_MCHBAR;
+	DMIBAR32(DMILE2A) = DEFAULT_MCHBAR;
 }
 
 void gm45_late_init(const stepping_t stepping)

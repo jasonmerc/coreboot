@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 
-
 #ifndef _SOC_CHIP_H_
 #define _SOC_CHIP_H_
 
@@ -86,7 +85,7 @@ struct soc_intel_skylake_config {
 	uint32_t deep_sx_config;
 
 	/* TCC activation offset */
-	int tcc_offset;
+	uint32_t tcc_offset;
 
 	/* Package PL4 power limit in Watts */
 	u32 PowerLimit4;

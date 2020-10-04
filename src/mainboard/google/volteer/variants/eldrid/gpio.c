@@ -18,10 +18,6 @@ static const struct pad_config override_gpio_table[] = {
 	PAD_NC(GPP_A15, NONE),
 	/* A16 : USB_OC3# ==> USB_C0_OC_ODL */
 	PAD_CFG_NF(GPP_A16, NONE, DEEP, NF1),
-	/* A19 : DDSP_HPD1 ==> USB_C0_DP_HPD */
-	PAD_CFG_NF(GPP_A19, NONE, DEEP, NF1),
-	/* A20 : DDSP_HPD2 ==> USB_C1_DP_HPD */
-	PAD_CFG_NF(GPP_A20, NONE, DEEP, NF1),
 	/* A21 : DDPC_CTRCLK ==> EN_FP_PWR */
 	PAD_CFG_GPO(GPP_A21, 1, DEEP),
 	/* A23 : I2S1_SCLK ==> I2S1_SPKR_SCLK */
@@ -158,9 +154,9 @@ static const struct pad_config override_gpio_table[] = {
 	/* S1 : SNDW0_DATA ==> SNDW0_HP_DATA_R */
 	PAD_CFG_NF(GPP_S1, NONE, DEEP, NF1),
 	/* S4 : SNDW2_CLK ==> PCH_DMIC_CAM_SCL_R */
-	PAD_CFG_NF(GPP_S4, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_S4, NONE, DEEP, NF2),
 	/* S5 : SNDW2_DATA ==> PCH_DMIC_CAM_SDA_R */
-	PAD_CFG_NF(GPP_S5, NONE, DEEP, NF1),
+	PAD_CFG_NF(GPP_S5, NONE, DEEP, NF2),
 
 	/* GPD9: SLP_WLAN# ==> SLP_WLAN_L */
 	PAD_CFG_NF(GPD9, NONE, DEEP, NF1),

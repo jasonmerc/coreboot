@@ -128,9 +128,6 @@ chip soc/intel/jasperlake
 	# Enable DPTF
 	register "dptf_enable" = "1"
 
-	# Enable Processor Thermal Control
-	register "Device4Enable" = "1"
-
 	# Add PL1 and PL2 values
 	register "power_limits_config" = "{
 		.tdp_pl1_override = 6,
@@ -469,7 +466,7 @@ chip soc/intel/jasperlake
 		end # GSPI #1
 		device pci 1f.0 on  end # eSPI Interface
 		device pci 1f.1 on  end # P2SB
-		device pci 1f.2 on  end # Power Management Controller
+		device pci 1f.2 hidden end # Power Management Controller
 		device pci 1f.3 on  end # Intel HDA
 		device pci 1f.4 on  end # SMBus
 		device pci 1f.5 on  end # PCH SPI

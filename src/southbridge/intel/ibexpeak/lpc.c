@@ -573,7 +573,7 @@ void southbridge_inject_dsdt(const struct device *dev)
 
 		/* Add it to SSDT.  */
 		acpigen_write_scope("\\");
-		acpigen_write_name_dword("NVSA", (u32) gnvs);
+		acpigen_write_name_dword("NVSA", (uintptr_t) gnvs);
 		acpigen_pop_len();
 	}
 }
@@ -617,7 +617,6 @@ static struct device_operations device_ops = {
 	.scan_bus		= scan_static_bus,
 	.ops_pci		= &pci_dev_ops_pci,
 };
-
 
 static const unsigned short pci_device_ids[] = {
 	PCI_DID_INTEL_IBEXPEAK_LPC_QM57,

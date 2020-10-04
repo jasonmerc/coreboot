@@ -8,7 +8,7 @@ config BOARD_SPECIFIC_OPTIONS
 	select HAVE_ACPI_RESUME
 	select HAVE_ACPI_TABLES
 	select HAVE_SMI_HANDLER
-	select GENERIC_SPD_BIN
+	select HAVE_SPD_IN_CBFS
 	select INTEL_GMA_HAVE_VBT
 	select INTEL_LPSS_UART_FOR_CONSOLE
 	select MAINBOARD_HAS_LPC_TPM
@@ -39,15 +39,7 @@ config MAINBOARD_VERSION
 
 config CBFS_SIZE
 	hex
-	default 0xA00000
-
-config SUBSYSTEM_VENDOR_ID
-	hex
-	default 0x1558
-
-config SUBSYSTEM_DEVICE_ID
-	hex
-	default 0x1401
+	default 0xc00000
 
 config CONSOLE_POST
 	bool

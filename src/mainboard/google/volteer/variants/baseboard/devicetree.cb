@@ -13,6 +13,7 @@ fw_config
 		option MAX98357_ALC5682I_I2S 1
 		option MAX98373_ALC5682I_I2S 2
 		option MAX98373_ALC5682_SNDW 3
+		option MAX98373_ALC5682I_I2S_UP4 4
 	end
 	field TABLETMODE 11
 		option TABLETMODE_DISABLED 0
@@ -21,6 +22,14 @@ fw_config
 	field DB_LTE 12 13
 		option LTE_ABSENT 0
 		option LTE_PRESENT 1
+	end
+	field KB_BL 14
+		option KB_BL_ABSENT 0
+		option KB_BL_PRESENT 1
+	end
+	field NUMPAD 15
+		option NUMPAD_ABSENT 0
+		option NUMPAD_PRESENT 1
 	end
 	field DB_SD 16 19
 		option SD_ABSENT 0
@@ -133,8 +142,8 @@ chip soc/intel/tigerlake
 	}"
 
 	register "SerialIoGSpiCsState" = "{
-		[PchSerialIoIndexGSPI0] = 0,
-		[PchSerialIoIndexGSPI1] = 0,
+		[PchSerialIoIndexGSPI0] = 1,
+		[PchSerialIoIndexGSPI1] = 1,
 		[PchSerialIoIndexGSPI2] = 0,
 		[PchSerialIoIndexGSPI3] = 0,
 	}"
@@ -144,6 +153,40 @@ chip soc/intel/tigerlake
 		[PchSerialIoIndexUART1] = PchSerialIoDisabled,
 		[PchSerialIoIndexUART2] = PchSerialIoDisabled,
 	}"
+
+	# Set the minimum assertion width
+	# PchPmSlpS3MinAssert:
+	#	- 1: 60us
+	#	- 2: 1ms
+	#	- 3: 50ms
+	#	- 4: 2s
+	register "PchPmSlpS3MinAssert"  = "3"  # 50ms
+	# PchPmSlpS4MinAssert:
+	#	- 1 = 1s
+	#	- 2 = 2s
+	#	- 3 = 3s
+	#	- 4 = 4s
+	register "PchPmSlpS4MinAssert"  = "1"  # 1s
+	# PchPmSlpSusMinAssert:
+	#	- 1 = 0ms
+	#	- 2 = 500ms
+	#	- 3 = 1s
+	#	- 4 = 4s
+	register "PchPmSlpSusMinAssert" = "3"  # 1s
+	# PchPmSlpAMinAssert
+	#	- 1 = 0ms
+	#	- 2 = 4s
+	#	- 3 = 98ms
+	#	- 4 = 2s
+	register "PchPmSlpAMinAssert"   = "3"  # 98ms
+
+	# NOTE: Duration programmed in the below register should never be smaller than the
+	# stretch duration programmed in the following registers -
+	#	- GEN_PMCON_A.SLP_S3_MIN_ASST_WDTH (PchPmSlpS3MinAssert)
+	#	- GEN_PMCON_A.S4MAW (PchPmSlpS4MinAssert)
+	#	- PM_CFG.SLP_A_MIN_ASST_WDTH (PchPmSlpAMinAssert)
+	#	- PM_CFG.SLP_LAN_MIN_ASST_WDTH
+	register "PchPmPwrCycDur" = "1"       # 1s
 
 	# HD Audio
 	register "PchHdaDspEnable" = "1"
@@ -220,6 +263,8 @@ chip soc/intel/tigerlake
 	register "Device4Enable" = "1"
 
 	register "tcc_offset" = "10"     # TCC of 90
+
+	register "CnviBtAudioOffload" = "FORCE_ENABLE"
 
 	# Intel Common SoC Config
 	#+-------------------+---------------------------+

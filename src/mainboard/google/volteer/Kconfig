@@ -27,7 +27,7 @@ config BOARD_GOOGLE_BASEBOARD_VOLTEER
 	select MAINBOARD_HAS_TPM2
 	select PCIEXP_HOTPLUG
 	select SOC_INTEL_TIGERLAKE
-	select GENERIC_SPD_BIN
+	select HAVE_SPD_IN_CBFS
 
 if BOARD_GOOGLE_BASEBOARD_VOLTEER
 
@@ -44,6 +44,15 @@ config CHROMEOS
 	select MRC_CLEAR_NORMAL_CACHE_ON_RECOVERY_RETRAIN
 	select VBOOT_LID_SWITCH
 	select VBOOT_EARLY_EC_SYNC
+
+config CHROMEOS_WIFI_SAR
+	bool "Enable SAR options for Chrome OS build"
+	depends on CHROMEOS
+	select DSAR_ENABLE
+	select GEO_SAR_ENABLE
+	select SAR_ENABLE
+	select USE_SAR
+	select WIFI_SAR_CBFS
 
 config DIMM_SPD_SIZE
 	int
@@ -81,6 +90,7 @@ config MAINBOARD_PART_NUMBER
 	default "Volteer" if BOARD_GOOGLE_VOLTEER
 	default "Volteer2" if BOARD_GOOGLE_VOLTEER2
 	default "Voxel" if BOARD_GOOGLE_VOXEL
+	default "Boldar" if BOARD_GOOGLE_BOLDAR
 
 config MAX_CPUS
 	int
@@ -117,6 +127,7 @@ config VARIANT_DIR
 	default "volteer" if BOARD_GOOGLE_VOLTEER
 	default "volteer2" if BOARD_GOOGLE_VOLTEER2
 	default "voxel" if BOARD_GOOGLE_VOXEL
+	default "boldar" if BOARD_GOOGLE_BOLDAR
 
 config VARIANT_HAS_MIPI_CAMERA
 	bool
