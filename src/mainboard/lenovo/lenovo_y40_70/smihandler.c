@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 
 #include <arch/io.h>
+#include <device/pci_ops.h>
 #include <console/console.h>
 #include <cpu/x86/smm.h>
 #include <ec/acpi/ec.h>
@@ -30,6 +31,24 @@ int mainboard_io_trap_handler(int smif)
 
 	return 0;
 }
+
+/* lynxpoint doesn't have gpi_route_interrupt, so add it */
+#define GPI_DISABLE 0x00
+#define GPI_IS_SMI 0x01
+#define GPI_IS_SCI 0x02
+#define GPI_IS_NMI 0x03
+
+static void gpi_route_interrupt(u8 gpi, u8 mode)
+{
+       u32 gpi_rout;
+
+       gpi_rout = pci_read_config32(PCI_DEV(0, 0x1f, 0), GPIO_ROUT);
+       gpi_rout &= ~(3 << (2 * gpi));
+       gpi_rout |= ((mode & 3) << (2 * gpi));
+       pci_write_config32(PCI_DEV(0, 0x1f, 0), GPIO_ROUT, gpi_rout);
+}
+
+
 
 static void mainboard_smi_handle_ec_sci(void)
 {
