@@ -1,0 +1,2 @@
+config BOARD_LENOVO_LENOVO_Y40_70
+	bool "Lenovo Y40-70"
